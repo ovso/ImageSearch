@@ -34,11 +34,8 @@ def androidx = [:]
 androidx.appcompat = "androidx.appcompat:appcompat:$versions.appcompat"
 androidx.constraintlayout = "androidx.constraintlayout:constraintlayout:$versions.constraintlayout"
 androidx.material = "com.google.android.material:material:$versions.material"
+androidx.ktx_core = "androidx.core:core-ktx:$versions.ktx"
 deps.androidx = androidx
-
-def ktx = [:]
-ktx.core = "androidx.core:core-ktx:$versions.ktx"
-deps.ktx = ktx
 
 def atsl = [:]
 atsl.junit = "junit:junit:$versions.junit"
@@ -49,8 +46,8 @@ deps.atsl = atsl
 def dagger = [:]
 dagger.runtime = "com.google.dagger:dagger:$versions.dagger"
 dagger.android = "com.google.dagger:dagger-android:$versions.dagger"
-dagger.android_support = "com.google.dagger:dagger-android-support:$versions.dagger"
 dagger.compiler = "com.google.dagger:dagger-compiler:$versions.dagger"
+dagger.android_support = "com.google.dagger:dagger-android-support:$versions.dagger"
 dagger.android_support_compiler = "com.google.dagger:dagger-android-processor:$versions.dagger"
 deps.dagger = dagger
 
@@ -88,7 +85,7 @@ deps.rx = rx
 deps.timber = "com.jakewharton.timber:timber:$versions.timber"
 deps.jsr250_api = "javax.annotation:jsr250-api:$versions.jsr250_api"
 deps.lottie = "com.airbnb.android:lottie:$versions.lottie"
-deps.kotlin = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin"
+deps.kotlin = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$versions.kotlin"
 
 ext.deps = deps
 

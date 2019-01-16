@@ -10,6 +10,7 @@ android {
         targetSdkVersion build_version.target_sdk
         versionCode build_version.version_code
         versionName build_version.version_name
+        vectorDrawables.useSupportLibrary true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -21,6 +22,13 @@ android {
             minifyEnabled false
         }
     }
+    dataBinding {
+        enabled = true
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -29,7 +37,7 @@ dependencies {
     implementation deps.androidx.appcompat
     implementation deps.androidx.material
     implementation deps.androidx.constraintlayout
-    implementation deps.ktx.core
+    implementation deps.androidx.ktx_core
     testImplementation deps.atsl.junit
     androidTestImplementation deps.atsl.runner
     androidTestImplementation deps.atsl.espressocore

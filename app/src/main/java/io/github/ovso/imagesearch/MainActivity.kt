@@ -6,8 +6,11 @@ import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.navigation.NavigationView
-import com.google.android.material.snackbar.Snackbar
+import io.github.ovso.imagesearch.databinding.ActivityMainBinding
+import io.github.ovso.imagesearch.viewmodels.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 
@@ -15,17 +18,24 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        setSupportActionBar(toolbar)
 
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }
+        val vm = ViewModelProvider.AndroidViewModelFactory.getInstance(this.application)
+            .create(MainViewModel::class.java)
+        val contentView: ActivityMainBinding =
+            DataBindingUtil.setContentView(this, R.layout.activity_main)
+        contentView.vm = vm
+        setSupportActionBar(toolbar)
+//    fab.setOnClickListener { view ->
+//      Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//          .setAction("Action", null)
+//          .show()
+//    }
 
         val toggle = ActionBarDrawerToggle(
-            this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
+            this, drawer_layout, toolbar, R.string.navigation_drawer_open,
+            R.string.navigation_drawer_close
         )
+
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
 
@@ -51,7 +61,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         when (item.itemId) {
-            R.id.action_settings -> return true
+            R.id.action_search -> return true
             else -> return super.onOptionsItemSelected(item)
         }
     }

@@ -39,6 +39,9 @@ dependencies {
     implementation deps.androidx.material
     implementation deps.androidx.constraintlayout
     implementation deps.androidx.ktx_core
+
+    implementation deps.timber
+
     testImplementation deps.atsl.junit
     androidTestImplementation deps.atsl.runner
     androidTestImplementation deps.atsl.espressocore

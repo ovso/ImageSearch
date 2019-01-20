@@ -6,9 +6,8 @@ import androidx.lifecycle.ViewModel
 
 class MainViewModel : ViewModel() {
     val name = ObservableField("ㅇㅇㅇㅇ")
-    fun btnClick(v: View) = name.set("ㅋㅋㅋㅋㅋㅋ")
-
-    fun fabClick() {
-        name.set("ㅎㅎㅎㅎㅎㅎㅎ")
+    fun onClick(v: View) {
+        name.set("크크크크")
     }
+
 }

@@ -1,36 +1,38 @@
-package io.github.ovso.imagesearch
+package io.github.ovso.imagesearch.view.ui
 
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.navigation.NavigationView
+import io.github.ovso.imagesearch.R
 import io.github.ovso.imagesearch.databinding.ActivityMainBinding
 import io.github.ovso.imagesearch.viewmodels.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import timber.log.Timber
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        seutpViewModel()
+        setupActionBar()
+        setupDrawer()
+        setupNavView()
+        Timber.d("onCreate");
+    }
 
-        val vm = ViewModelProvider.AndroidViewModelFactory.getInstance(this.application)
-            .create(MainViewModel::class.java)
-        val contentView: ActivityMainBinding =
-            DataBindingUtil.setContentView(this, R.layout.activity_main)
-        contentView.vm = vm
-        setSupportActionBar(toolbar)
-//    fab.setOnClickListener { view ->
-//      Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//          .setAction("Action", null)
-//          .show()
-//    }
+    private fun setupNavView() {
+        nav_view.setNavigationItemSelectedListener(this)
+    }
 
+    private fun setupDrawer() {
         val toggle = ActionBarDrawerToggle(
             this, drawer_layout, toolbar, R.string.navigation_drawer_open,
             R.string.navigation_drawer_close
@@ -38,8 +40,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
+    }
 
-        nav_view.setNavigationItemSelectedListener(this)
+    private fun setupActionBar() {
+        setSupportActionBar(toolbar)
+    }
+
+    private fun seutpViewModel() {
+        val vm = ViewModelProvider.AndroidViewModelFactory.getInstance(this.application)
+            .create(MainViewModel::class.java)
+        val contentView: ActivityMainBinding =
+            DataBindingUtil.setContentView(this, R.layout.activity_main)
+        contentView.vm = vm
     }
 
     override fun onBackPressed() {
@@ -50,9 +62,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
+    var menu: Menu? = null
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
+        this.menu = menu
+        var searchView = menu.findItem(R.id.action_search).actionView as SearchView
         return true
     }
 
@@ -61,7 +76,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         when (item.itemId) {
-            R.id.action_search -> return true
+            R.id.action_search -> {
+
+                return true
+            }
             else -> return super.onOptionsItemSelected(item)
         }
     }

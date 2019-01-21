@@ -18,7 +18,8 @@ import kotlinx.android.synthetic.main.app_bar_main.*
 import timber.log.Timber
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-
+    private var vm: MainViewModel? = null
+    private var searchView: SearchView? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         seutpViewModel()
@@ -47,7 +48,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun seutpViewModel() {
-        val vm = ViewModelProvider.AndroidViewModelFactory.getInstance(this.application)
+        vm = ViewModelProvider.AndroidViewModelFactory.getInstance(this.application)
             .create(MainViewModel::class.java)
         val contentView: ActivityMainBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_main)
@@ -62,12 +63,23 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    var menu: Menu? = null
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
+        Timber.d("onCreateOptionsMenu()")
         menuInflater.inflate(R.menu.main, menu)
-        this.menu = menu
-        var searchView = menu.findItem(R.id.action_search).actionView as SearchView
+        searchView = menu.findItem(R.id.action_search).actionView as SearchView
+        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+
+                return false;
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                vm?.name?.set(newText)
+                return false
+            }
+        })
+
         return true
     }
 

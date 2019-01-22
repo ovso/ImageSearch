@@ -26,7 +26,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setupActionBar()
         setupDrawer()
         setupNavView()
-        Timber.d("onCreate");
     }
 
     private fun setupNavView() {
@@ -49,8 +48,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun seutpViewModel() {
         vm = ViewModelProvider.AndroidViewModelFactory.getInstance(this.application).create(MainViewModel::class.java)
-        val contentView: ActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        contentView.vm = vm
+        val binding: ActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding.vm = vm
+        binding.executePendingBindings()
     }
 
     override fun onBackPressed() {

@@ -48,10 +48,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun seutpViewModel() {
-        vm = ViewModelProvider.AndroidViewModelFactory.getInstance(this.application)
-            .create(MainViewModel::class.java)
-        val contentView: ActivityMainBinding =
-            DataBindingUtil.setContentView(this, R.layout.activity_main)
+        vm = ViewModelProvider.AndroidViewModelFactory.getInstance(this.application).create(MainViewModel::class.java)
+        val contentView: ActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         contentView.vm = vm
     }
 
@@ -68,18 +66,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         Timber.d("onCreateOptionsMenu()")
         menuInflater.inflate(R.menu.main, menu)
         searchView = menu.findItem(R.id.action_search).actionView as SearchView
-        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-
-                return false;
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                vm?.name?.set(newText)
-                return false
-            }
-        })
-
+        searchView?.setOnQueryTextListener(vm?.onQueryTextChange)
         return true
     }
 

@@ -39,6 +39,14 @@ dependencies {
     implementation deps.androidx.material
     implementation deps.androidx.constraintlayout
     implementation deps.androidx.ktx_core
+    implementation deps.rx.rxjava2
+    implementation deps.rx.rxandroid
+
+    implementation deps.retrofit.runtime
+    implementation deps.retrofit.gson
+    implementation deps.retrofit.rxjava2
+    implementation deps.okhttp.runtime
+    implementation deps.okhttp.logging_interceptor
 
     implementation deps.timber
 

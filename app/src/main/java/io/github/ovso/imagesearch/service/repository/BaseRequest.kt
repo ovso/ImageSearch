@@ -1,0 +1,65 @@
+package io.github.ovso.imagesearch.service.repository
+
+import okhttp3.Headers
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import retrofit2.converter.gson.GsonConverterFactory
+import java.util.*
+import java.util.concurrent.TimeUnit
+
+abstract class BaseRequest<T> {
+
+    val api: T
+        get() = createRetrofit().create(apiClass)
+
+    protected abstract val apiClass: Class<T>
+
+    protected abstract val baseUrl: String
+
+    private val isLog: Boolean
+        get() = false
+
+    protected abstract fun createHeaders(): Headers
+
+    private fun createRetrofit(): Retrofit {
+        return Retrofit.Builder().baseUrl(baseUrl)
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .client(createClient())
+            .build()
+    }
+
+    private fun createClient(): OkHttpClient {
+        val httpClient = OkHttpClient.Builder()
+        httpClient.readTimeout(TIMEOUT_SECONDS.toLong(), TimeUnit.SECONDS)
+        httpClient.connectTimeout(TIMEOUT_SECONDS.toLong(), TimeUnit.SECONDS)
+        httpClient.addInterceptor { chain ->
+            val original = chain.request()
+            val requestBuilder = original.newBuilder()
+                .header("Content-Type", "plain/text")
+                .headers(this@BaseRequest.createHeaders())
+            val request = requestBuilder.build()
+            chain.proceed(request)
+        }
+        val interceptor = HttpLoggingInterceptor()
+        interceptor.level = HttpLoggingInterceptor.Level.BODY
+
+        if (isLog) httpClient.addInterceptor(interceptor)
+
+        return httpClient.build()
+    }
+
+    companion object {
+        private val TIMEOUT_SECONDS = 7
+
+        internal fun createParam(query: String): Map<String, Any> {
+            val param = HashMap<String, Any>()
+            param["query"] = query
+            param["sort"] = "accuracy"
+            param["size"] = 30
+            return param
+        }
+    }
+}

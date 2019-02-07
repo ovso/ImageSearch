@@ -6,7 +6,6 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import java.util.*
 import java.util.concurrent.TimeUnit
 
 abstract class BaseRequest<T> {
@@ -53,13 +52,5 @@ abstract class BaseRequest<T> {
 
     companion object {
         private val TIMEOUT_SECONDS = 7
-
-        internal fun createParam(query: String): Map<String, Any> {
-            val param = HashMap<String, Any>()
-            param["query"] = query
-            param["sort"] = "accuracy"
-            param["size"] = 30
-            return param
-        }
     }
 }

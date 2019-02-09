@@ -3,20 +3,19 @@ package io.github.ovso.imagesearch.viewmodels
 import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.ObservableField
-import androidx.lifecycle.ViewModel
+import io.github.ovso.imagesearch.service.model.CustomSearch
 import io.github.ovso.imagesearch.service.repository.CustomSearchRequest
 import io.github.ovso.imagesearch.utils.Schedulers
 import io.reactivex.SingleObserver
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import timber.log.Timber
+import java.util.concurrent.TimeUnit
 
-class MainViewModel : ViewModel() {
+class MainViewModel : BaseViewModel() {
 
     val name = ObservableField("ㅇㅇㅇㅇ")
     val customSearchRequest = CustomSearchRequest()
     val schedulers = Schedulers()
-    val compositeDisposable = CompositeDisposable()
     fun onClick(v: View) {
         name.set("크크크크")
     }
@@ -28,23 +27,28 @@ class MainViewModel : ViewModel() {
         }
 
         override fun onQueryTextChange(query: String?): Boolean {
-            customSearchRequest.customSearch(query!!)
-                .subscribeOn(schedulers.io())
-                .observeOn(schedulers.ui())
-                .subscribe(getObserver())
+            clearDisposable()
+            if (!query.isNullOrEmpty()) {
+                customSearchRequest.customSearch(query)
+                    .delay(1, TimeUnit.SECONDS)
+                    .subscribeOn(schedulers.io())
+                    .observeOn(schedulers.ui())
+                    .subscribe(getObserver())
+            } else {
+                Timber.d("onQueryTextChange = null or empty")
+            }
 
             return false
         }
     }
 
-    private fun getObserver(): SingleObserver<Any> {
-        return object : SingleObserver<Any> {
-            override fun onSuccess(t: Any) {
-                Timber.d("onSuccess = %s", t.toString())
+    private fun getObserver(): SingleObserver<CustomSearch.Result> {
+        return object : SingleObserver<CustomSearch.Result> {
+            override fun onSuccess(t: CustomSearch.Result) {
             }
 
             override fun onSubscribe(d: Disposable) {
-                compositeDisposable.add(d)
+                addDisposable(d)
             }
 
             override fun onError(e: Throwable) {

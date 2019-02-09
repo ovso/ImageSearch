@@ -63,7 +63,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
-        Timber.d("onCreateOptionsMenu()")
         menuInflater.inflate(R.menu.main, menu)
         searchView = menu.findItem(R.id.action_search).actionView as SearchView
         searchView?.setOnQueryTextListener(vm?.onQueryTextChange)

@@ -49,13 +49,7 @@ object CustomSearch {
 
     data class Pagemap(
         val cse_image: List<CseImage>,
-        val cse_thumbnail: List<CseThumbnail>,
-        val metatags: List<Metatag>
-    )
-
-    data class Metatag(
-        val copyright: String,
-        @SerializedName("fb:app_id") val fb_app_id: String
+        val cse_thumbnail: List<CseThumbnail>
     )
 
     data class CseThumbnail(

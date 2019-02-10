@@ -3,7 +3,7 @@ package io.github.ovso.imagesearch.viewmodels
 import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.ObservableField
-import io.github.ovso.imagesearch.service.model.CustomSearch
+import com.google.gson.JsonElement
 import io.github.ovso.imagesearch.service.repository.CustomSearchRequest
 import io.github.ovso.imagesearch.utils.Schedulers
 import io.reactivex.SingleObserver
@@ -42,9 +42,9 @@ class MainViewModel : BaseViewModel() {
         }
     }
 
-    private fun getObserver(): SingleObserver<CustomSearch.Result> {
-        return object : SingleObserver<CustomSearch.Result> {
-            override fun onSuccess(t: CustomSearch.Result) {
+    private fun getObserver(): SingleObserver<JsonElement> {
+        return object : SingleObserver<JsonElement> {
+            override fun onSuccess(t: JsonElement) {
             }
 
             override fun onSubscribe(d: Disposable) {

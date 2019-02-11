@@ -1,6 +1,6 @@
 package io.github.ovso.imagesearch.service.repository
 
-import com.google.gson.JsonElement
+import io.github.ovso.imagesearch.service.model.CustomSearch
 import io.reactivex.Single
 import okhttp3.Headers
 
@@ -17,7 +17,7 @@ class CustomSearchRequest : BaseRequest<CustomSearchService>() {
         return Headers.Builder().build()
     }
 
-    fun customSearch(query: String): Single<JsonElement> {
+    fun customSearch(query: String): Single<CustomSearch.Result> {
         val param = HashMap<String, Any>()
         param.put("key", "AIzaSyAM9aaztXVlGNX40ZoFV5MYvpmg65qOCbQ")
         param.put("cx", "012722901045059265659:m8q8x8ftuii")

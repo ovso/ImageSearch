@@ -1,20 +1,16 @@
 package io.github.ovso.imagesearch.service.model
 
-import com.google.gson.annotations.SerializedName
-
 object CustomSearch {
 
     data class Result(
-        val context: Context,
         val items: List<Item>,
-        val kind: String,
-        val queries: Queries,
-        val searchInformation: SearchInformation,
-        val url: Url
+        val queries: Queries
     )
 
     data class Queries(
-        val request: List<Request>
+        val request: List<Request>,
+        val nextPage: List<NextPage>
+
     )
 
     data class Request(
@@ -29,22 +25,20 @@ object CustomSearch {
         val totalResults: String
     )
 
-    data class Context(
-        val title: String
+    data class NextPage(
+        val count: Int,
+        val cx: String,
+        val inputEncoding: String,
+        val outputEncoding: String,
+        val safe: String,
+        val searchTerms: String,
+        val startIndex: Int,
+        val title: String,
+        val totalResults: String
     )
 
     data class Item(
-        val cacheId: String,
-        val displayLink: String,
-        val formattedUrl: String,
-        val htmlFormattedUrl: String,
-        val htmlSnippet: String,
-        val htmlTitle: String,
-        val kind: String,
-        val link: String,
-        val pagemap: Pagemap,
-        val snippet: String,
-        val title: String
+        val pagemap: Pagemap
     )
 
     data class Pagemap(
@@ -60,17 +54,5 @@ object CustomSearch {
 
     data class CseImage(
         val src: String
-    )
-
-    data class Url(
-        val template: String,
-        val type: String
-    )
-
-    data class SearchInformation(
-        val formattedSearchTime: String,
-        val formattedTotalResults: String,
-        val searchTime: Double,
-        val totalResults: String
     )
 }

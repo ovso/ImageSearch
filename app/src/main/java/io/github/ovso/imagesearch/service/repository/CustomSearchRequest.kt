@@ -19,7 +19,7 @@ class CustomSearchRequest : BaseRequest<CustomSearchService>() {
 
     fun customSearch(query: String): Single<JsonElement> {
         val param = HashMap<String, Any>()
-        param.put("key", "AIzaSyBUL4F_nU_I6FO-8TfZsetedHIDyLJ-9hM")
+        param.put("key", "AIzaSyAM9aaztXVlGNX40ZoFV5MYvpmg65qOCbQ")
         param.put("cx", "012722901045059265659:m8q8x8ftuii")
         param.put("q", query)
         return api.customSearch(param)

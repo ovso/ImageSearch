@@ -6,10 +6,10 @@ import io.github.ovso.imagesearch.R
 import io.github.ovso.imagesearch.view.base.BaseViewHolder
 
 class MainViewHolder(override val containerView: View?) : BaseViewHolder<Any>(containerView!!) {
-
     override fun bind(data: Any) {
-        super.bind(data)
+        this.data = data
     }
+
 
     companion object {
         fun create(root: ViewGroup): MainViewHolder {

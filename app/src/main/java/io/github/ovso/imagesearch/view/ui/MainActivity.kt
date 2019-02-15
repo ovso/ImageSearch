@@ -15,14 +15,13 @@ import io.github.ovso.imagesearch.databinding.ActivityMainBinding
 import io.github.ovso.imagesearch.viewmodels.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
-import timber.log.Timber
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private var vm: MainViewModel? = null
     private var searchView: SearchView? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        seutpViewModel()
+        setupBinding(savedInstanceState)
         setupActionBar()
         setupDrawer()
         setupNavView()
@@ -46,11 +45,20 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setSupportActionBar(toolbar)
     }
 
-    private fun seutpViewModel() {
+    private fun setupBinding(savedInstanceState: Bundle?) {
         vm = ViewModelProvider.AndroidViewModelFactory.getInstance(this.application).create(MainViewModel::class.java)
         val binding: ActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        if (savedInstanceState == null) {
+            vm!!.init()
+        }
         binding.vm = vm
         binding.executePendingBindings()
+
+        setupListUpdate();
+    }
+
+    private fun setupListUpdate() {
+
     }
 
     override fun onBackPressed() {

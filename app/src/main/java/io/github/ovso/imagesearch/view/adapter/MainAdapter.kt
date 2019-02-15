@@ -24,7 +24,7 @@ class MainAdapter(private val layoutId: Int, private val viewModel: MainViewMode
     }
 
     override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        holder.bind(viewModel, position);
     }
 
     fun addAll(items: List<CustomSearch.Item>) {

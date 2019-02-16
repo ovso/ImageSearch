@@ -14,56 +14,57 @@ import java.util.concurrent.TimeUnit
 
 class MainViewModel : BaseViewModel() {
 
-    var name: ObservableField<String>? = null
-    var selected: MutableLiveData<CustomSearch.Item>? = null
-    var customSearchRequest: CustomSearchRequest? = null
-    var schedulers: Schedulers? = null
+  var name: ObservableField<String>? = null
+  var selected: MutableLiveData<CustomSearch.Item>? = null
+  var customSearchRequest: CustomSearchRequest? = null
+  var schedulers: Schedulers? = null
+  var customSearchRe: CustomSearchRequest? = null
 
-    fun onClick(v: View) {
+  fun onClick(v: View) {
 
+  }
+
+  fun init() {
+    name = ObservableField("ㅋㅋㅋㅋㅋㅋㅋㅋ");
+    selected = MutableLiveData()
+    schedulers = Schedulers()
+    customSearchRequest = CustomSearchRequest()
+  }
+
+  val onQueryTextChange = object : SearchView.OnQueryTextListener {
+    override fun onQueryTextSubmit(query: String?): Boolean {
+      return false;
     }
 
-    fun init() {
-        name = ObservableField("ㅋㅋㅋㅋㅋㅋㅋㅋ");
-        selected = MutableLiveData()
-        customSearchRequest = CustomSearchRequest()
-        schedulers = Schedulers()
+    override fun onQueryTextChange(query: String?): Boolean {
+      clearDisposable()
+      if (!query.isNullOrEmpty()) {
+        customSearchRequest!!.customSearch(query)
+            .delay(1, TimeUnit.SECONDS)
+            .subscribeOn(schedulers!!.io())
+            .observeOn(schedulers!!.ui())
+            .subscribe(getObserver())
+      } else {
+        Timber.d("onQueryTextChange = null or empty")
+      }
+
+      return false
     }
+  }
 
-    val onQueryTextChange = object : SearchView.OnQueryTextListener {
-        override fun onQueryTextSubmit(query: String?): Boolean {
-            return false;
-        }
+  private fun getObserver(): SingleObserver<CustomSearch.Result> {
+    return object : SingleObserver<CustomSearch.Result> {
+      override fun onSuccess(t: CustomSearch.Result) {
 
-        override fun onQueryTextChange(query: String?): Boolean {
-            clearDisposable()
-            if (!query.isNullOrEmpty()) {
-                customSearchRequest!!.customSearch(query)
-                    .delay(1, TimeUnit.SECONDS)
-                    .subscribeOn(schedulers!!.io())
-                    .observeOn(schedulers!!.ui())
-                    .subscribe(getObserver())
-            } else {
-                Timber.d("onQueryTextChange = null or empty")
-            }
+      }
 
-            return false
-        }
+      override fun onSubscribe(d: Disposable) {
+        addDisposable(d)
+      }
+
+      override fun onError(e: Throwable) {
+        Timber.e(e)
+      }
     }
-
-    private fun getObserver(): SingleObserver<CustomSearch.Result> {
-        return object : SingleObserver<CustomSearch.Result> {
-            override fun onSuccess(t: CustomSearch.Result) {
-
-            }
-
-            override fun onSubscribe(d: Disposable) {
-                addDisposable(d)
-            }
-
-            override fun onError(e: Throwable) {
-                Timber.e(e)
-            }
-        }
-    }
+  }
 }

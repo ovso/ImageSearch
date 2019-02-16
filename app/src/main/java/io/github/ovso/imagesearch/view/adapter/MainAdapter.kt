@@ -8,26 +8,35 @@ import androidx.recyclerview.widget.RecyclerView
 import io.github.ovso.imagesearch.service.model.CustomSearch
 import io.github.ovso.imagesearch.viewmodels.MainViewModel
 
-class MainAdapter(private val layoutId: Int, private val viewModel: MainViewModel) :
+class MainAdapter(
+  private val layoutId: Int,
+  private val viewModel: MainViewModel
+) :
     RecyclerView.Adapter<MainViewHolder>() {
 
-    private val items = ArrayList<CustomSearch.Item>()
+  private val items = ArrayList<CustomSearch.Item>()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder {
-        val layoutInflater = LayoutInflater.from(parent.context)
-        val binding: ViewDataBinding = DataBindingUtil.inflate(layoutInflater, viewType, parent, false)
-        return MainViewHolder.create(binding)
-    }
+  override fun onCreateViewHolder(
+    parent: ViewGroup,
+    viewType: Int
+  ): MainViewHolder {
+    val layoutInflater = LayoutInflater.from(parent.context)
+    val binding: ViewDataBinding = DataBindingUtil.inflate(layoutInflater, viewType, parent, false)
+    return MainViewHolder.create(binding)
+  }
 
-    override fun getItemCount(): Int {
-        return items.size
-    }
+  override fun getItemCount(): Int {
+    return items.size
+  }
 
-    override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
-        holder.bind(viewModel, position);
-    }
+  override fun onBindViewHolder(
+    holder: MainViewHolder,
+    position: Int
+  ) {
+    holder.bind(viewModel, position);
+  }
 
-    fun addAll(items: List<CustomSearch.Item>) {
-        this.items.addAll(items)
-    }
+  fun addAll(items: List<CustomSearch.Item>) {
+    this.items.addAll(items)
+  }
 }

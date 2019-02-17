@@ -5,8 +5,10 @@ import androidx.appcompat.widget.SearchView
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import io.github.ovso.imagesearch.service.model.CustomSearch
+import io.github.ovso.imagesearch.service.model.CustomSearch.Item
 import io.github.ovso.imagesearch.service.repository.CustomSearchRequest
 import io.github.ovso.imagesearch.utils.Schedulers
+import io.github.ovso.imagesearch.view.adapter.MainAdapter
 import io.reactivex.SingleObserver
 import io.reactivex.disposables.Disposable
 import timber.log.Timber
@@ -16,9 +18,13 @@ class MainViewModel : BaseViewModel() {
 
   var name: ObservableField<String>? = null
   var selected: MutableLiveData<CustomSearch.Item>? = null
+  var mutableLiveData: MutableLiveData<List<CustomSearch.Item>>? = null
   var customSearchRequest: CustomSearchRequest? = null
   var schedulers: Schedulers? = null
-  var customSearchRe: CustomSearchRequest? = null
+  var adapter: MainAdapter? = null
+  var error: MutableLiveData<Int>? = null
+  var loading: MutableLiveData<Int>? = null
+  var showEmpty: MutableLiveData<Int>? = null
 
   fun onClick(v: View) {
 
@@ -29,6 +35,11 @@ class MainViewModel : BaseViewModel() {
     selected = MutableLiveData()
     schedulers = Schedulers()
     customSearchRequest = CustomSearchRequest()
+    mutableLiveData = MutableLiveData()
+    adapter = MainAdapter(this)
+    error = MutableLiveData()
+    loading = MutableLiveData()
+    showEmpty = MutableLiveData()
   }
 
   val onQueryTextChange = object : SearchView.OnQueryTextListener {
@@ -37,6 +48,7 @@ class MainViewModel : BaseViewModel() {
     }
 
     override fun onQueryTextChange(query: String?): Boolean {
+      println("onQueryTextChange = $query")
       clearDisposable()
       if (!query.isNullOrEmpty()) {
         customSearchRequest!!.customSearch(query)
@@ -55,7 +67,8 @@ class MainViewModel : BaseViewModel() {
   private fun getObserver(): SingleObserver<CustomSearch.Result> {
     return object : SingleObserver<CustomSearch.Result> {
       override fun onSuccess(t: CustomSearch.Result) {
-
+        println("size = ${t.items.size}")
+        mutableLiveData!!.value = t.items
       }
 
       override fun onSubscribe(d: Disposable) {
@@ -63,8 +76,14 @@ class MainViewModel : BaseViewModel() {
       }
 
       override fun onError(e: Throwable) {
-        Timber.e(e)
+        println("onError = $e")
       }
     }
   }
+
+  fun setItemsInAdapter(it: List<Item> = ArrayList()) {
+    adapter?.addAll(it)
+    adapter?.notifyDataSetChanged()
+  }
+
 }

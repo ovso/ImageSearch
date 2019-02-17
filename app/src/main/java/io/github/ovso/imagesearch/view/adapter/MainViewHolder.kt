@@ -19,7 +19,7 @@ class MainViewHolder(binding: ViewDataBinding) : RecyclerView.ViewHolder(binding
     viewModel: MainViewModel,
     position: Int
   ) {
-    // 뷰모델의 데이터를 position 값으로 가져온다?
+    println("bind = $position")
   }
 
   companion object {

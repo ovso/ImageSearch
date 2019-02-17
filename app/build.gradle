@@ -57,6 +57,9 @@ dependencies {
 
   implementation deps.timber
 
+  implementation deps.glide.runtime
+  annotationProcessor deps.glide.compiler
+
   testImplementation deps.atsl.junit
   androidTestImplementation deps.atsl.runner
   androidTestImplementation deps.atsl.espressocore

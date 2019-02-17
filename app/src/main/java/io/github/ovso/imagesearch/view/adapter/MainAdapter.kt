@@ -9,7 +9,6 @@ import io.github.ovso.imagesearch.service.model.CustomSearch
 import io.github.ovso.imagesearch.viewmodels.MainViewModel
 
 class MainAdapter(
-  private val layoutId: Int,
   private val viewModel: MainViewModel
 ) :
     RecyclerView.Adapter<MainViewHolder>() {
@@ -36,7 +35,7 @@ class MainAdapter(
     holder.bind(viewModel, position);
   }
 
-  fun addAll(items: List<CustomSearch.Item>) {
+  fun addAll(items: List<CustomSearch.Item> = ArrayList()) {
     this.items.addAll(items)
   }
 }

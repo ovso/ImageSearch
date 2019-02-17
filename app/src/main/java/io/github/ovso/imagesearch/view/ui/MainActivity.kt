@@ -3,11 +3,13 @@ package io.github.ovso.imagesearch.view.ui
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.navigation.NavigationView
 import io.github.ovso.imagesearch.R
@@ -15,9 +17,10 @@ import io.github.ovso.imagesearch.databinding.ActivityMainBinding
 import io.github.ovso.imagesearch.viewmodels.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import kotlinx.android.synthetic.main.content_main.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-  private var vm: MainViewModel? = null
+  private var viewModel: MainViewModel? = null
   private var searchView: SearchView? = null
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -46,19 +49,30 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
   }
 
   private fun setupBinding(savedInstanceState: Bundle?) {
-    vm = ViewModelProvider.AndroidViewModelFactory.getInstance(this.application)
+    viewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(this.application)
         .create(MainViewModel::class.java)
-    val binding: ActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+    val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
     if (savedInstanceState == null) {
-      vm!!.init()
+      viewModel!!.init()
     }
-    binding.vm = vm
+    binding.vm = viewModel
     binding.executePendingBindings()
 
     setupListUpdate();
   }
 
   private fun setupListUpdate() {
+    viewModel?.loading?.value = View.VISIBLE
+    viewModel?.mutableLiveData?.observe(this, Observer {
+      viewModel?.loading?.value = View.GONE
+      if (it.isNullOrEmpty()) {
+        viewModel?.showEmpty?.value = View.VISIBLE
+      } else {
+        viewModel?.showEmpty?.value = View.GONE
+        recyclerview_main.adapter = viewModel?.adapter
+        viewModel?.setItemsInAdapter(it)
+      }
+    })
 
   }
 
@@ -71,10 +85,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
   }
 
   override fun onCreateOptionsMenu(menu: Menu): Boolean {
-    // Inflate the menu; this adds items to the action bar if it is present.
+    // Inflate the menu; this adds mutableLiveData to the action bar if it is present.
     menuInflater.inflate(R.menu.main, menu)
     searchView = menu.findItem(R.id.action_search).actionView as SearchView
-    searchView?.setOnQueryTextListener(vm?.onQueryTextChange)
+    searchView?.setOnQueryTextListener(viewModel?.onQueryTextChange)
     return true
   }
 

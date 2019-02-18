@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     >
   <data>
 
+    <variable
+        name="position"
+        type="Integer"
+        />
     <variable
         name="vm"
         type="io.github.ovso.imagesearch.viewmodels.MainViewModel"
         />
   </data>
 
-  <ImageView
-      android:id="@+id/imageview_mainviewholder"
+  <com.google.android.material.button.MaterialButton
       android:layout_width="match_parent"
-      android:layout_height="match_parent"
+      android:layout_height="?android:attr/actionBarSize"
+      android:text="@{vm.getItem(position).title}"
+      android:textColor="@android:color/white"
       />
-
 </layout>

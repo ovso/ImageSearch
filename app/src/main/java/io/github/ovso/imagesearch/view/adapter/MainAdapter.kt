@@ -25,16 +25,12 @@ class MainAdapter(private val viewModel: MainViewModel) : RecyclerView.Adapter<M
     return MainViewHolder.create(binding)
   }
 
-  override fun getItemCount(): Int {
-    return items.size
-  }
-
   override fun onBindViewHolder(
     holder: MainViewHolder,
     position: Int
-  ) {
-    holder.bind(viewModel, position);
-  }
+  ) = holder.bind(viewModel, position)
+
+  override fun getItemCount() = items.size
 
   fun addAll(items: List<CustomSearch.Item> = ArrayList()) {
     this.items.addAll(items)

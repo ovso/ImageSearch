@@ -11,7 +11,7 @@ object AdapterBindings {
     recyclerView: RecyclerView,
     adapter: MainAdapter
   ) {
-    recyclerView.setHasFixedSize(true);
+    recyclerView.setHasFixedSize(true)
     recyclerView.layoutManager = LinearLayoutManager(recyclerView.context)
     recyclerView.adapter = adapter
   }

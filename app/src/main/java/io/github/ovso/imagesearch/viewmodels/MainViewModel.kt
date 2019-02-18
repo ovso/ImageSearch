@@ -1,6 +1,5 @@
 package io.github.ovso.imagesearch.viewmodels
 
-import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
@@ -25,10 +24,6 @@ class MainViewModel : BaseViewModel() {
   var error: MutableLiveData<Int>? = null
   var loading: MutableLiveData<Int>? = null
   var showEmpty: MutableLiveData<Int>? = null
-
-  fun onClick(v: View) {
-
-  }
 
   fun init() {
     name = ObservableField("ㅋㅋㅋㅋㅋㅋㅋㅋ");
@@ -67,7 +62,7 @@ class MainViewModel : BaseViewModel() {
   private fun getObserver(): SingleObserver<CustomSearch.Result> {
     return object : SingleObserver<CustomSearch.Result> {
       override fun onSuccess(t: CustomSearch.Result) {
-        mutableLiveData!!.value = t.items
+        mutableLiveData?.value = t.items
       }
 
       override fun onSubscribe(d: Disposable) {
@@ -79,6 +74,8 @@ class MainViewModel : BaseViewModel() {
       }
     }
   }
+
+  fun getItem(position: Int) = mutableLiveData?.value?.get(position)
 
   fun setItemsInAdapter(it: List<Item> = ArrayList()) {
     adapter?.addAll(it)

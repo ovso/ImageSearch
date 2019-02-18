@@ -38,6 +38,7 @@ object CustomSearch {
   )
 
   data class Item(
+    val title: String,
     val pagemap: Pagemap
   )
 

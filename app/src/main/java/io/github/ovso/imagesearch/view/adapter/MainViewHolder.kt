@@ -18,7 +18,10 @@ class MainViewHolder(
     viewModel: MainViewModel,
     position: Int
   ) {
-    println("bind = $viewModel , $position")
+    println("bind = $position")
+    var item = viewModel.mutableLiveData?.value?.get(position)
+    var url = item?.pagemap?.cse_image?.first()?.src
+    println("url = $url")
   }
 
   companion object {

@@ -67,7 +67,6 @@ class MainViewModel : BaseViewModel() {
   private fun getObserver(): SingleObserver<CustomSearch.Result> {
     return object : SingleObserver<CustomSearch.Result> {
       override fun onSuccess(t: CustomSearch.Result) {
-        println("size = ${t.items.size}")
         mutableLiveData!!.value = t.items
       }
 

@@ -5,13 +5,11 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
+import io.github.ovso.imagesearch.R
 import io.github.ovso.imagesearch.service.model.CustomSearch
 import io.github.ovso.imagesearch.viewmodels.MainViewModel
 
-class MainAdapter(
-  private val viewModel: MainViewModel
-) :
-    RecyclerView.Adapter<MainViewHolder>() {
+class MainAdapter(private val viewModel: MainViewModel) : RecyclerView.Adapter<MainViewHolder>() {
 
   private val items = ArrayList<CustomSearch.Item>()
 
@@ -19,8 +17,11 @@ class MainAdapter(
     parent: ViewGroup,
     viewType: Int
   ): MainViewHolder {
+
     val layoutInflater = LayoutInflater.from(parent.context)
-    val binding: ViewDataBinding = DataBindingUtil.inflate(layoutInflater, viewType, parent, false)
+    val binding: ViewDataBinding =
+      DataBindingUtil.inflate(layoutInflater, R.layout.item_main, parent, false)
+
     return MainViewHolder.create(binding)
   }
 

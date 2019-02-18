@@ -7,24 +7,23 @@ import io.github.ovso.imagesearch.view.base.IBind2
 import io.github.ovso.imagesearch.viewmodels.MainViewModel
 import kotlinx.android.extensions.LayoutContainer
 
-class MainViewHolder(binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root),
+class MainViewHolder(
+  private var binding: ViewDataBinding,
+  override val containerView: View?
+) : RecyclerView.ViewHolder(containerView!!),
     LayoutContainer,
     IBind2<MainViewModel> {
-  override val containerView: View?
-    get() = TODO(
-        "not implemented"
-    ) //To change initializer of created properties use File | Settings | File Templates.
 
   override fun bind(
     viewModel: MainViewModel,
     position: Int
   ) {
-    println("bind = $position")
+    println("bind = $viewModel , $position")
   }
 
   companion object {
     fun create(binding: ViewDataBinding): MainViewHolder {
-      return MainViewHolder(binding)
+      return MainViewHolder(binding, binding.root)
     }
   }
 }

@@ -18,11 +18,7 @@ class MainAdapter(private val viewModel: MainViewModel) : RecyclerView.Adapter<M
     viewType: Int
   ): MainViewHolder {
 
-    val layoutInflater = LayoutInflater.from(parent.context)
-    val binding: ViewDataBinding =
-      DataBindingUtil.inflate(layoutInflater, R.layout.item_main, parent, false)
-
-    return MainViewHolder.create(binding)
+    return MainViewHolder.create(parent)
   }
 
   override fun onBindViewHolder(

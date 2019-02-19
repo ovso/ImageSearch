@@ -15,21 +15,12 @@
         />
   </data>
 
-  <FrameLayout
+  <ImageView
       android:layout_width="match_parent"
       android:layout_height="150dp"
-      >
-    <com.google.android.material.button.MaterialButton
-        android:layout_width="match_parent"
-        android:layout_height="?android:attr/actionBarSize"
-        android:text="@{vm.getItem(position).title}"
-        android:textColor="@android:color/white"
-        />
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:imgRes="@{vm.getImageUrl(position)}"
-        tools:src="@color/colorPrimary"
-        />
-  </FrameLayout>
+      android:contentDescription="@string/all_thumbnail"
+      android:scaleType="centerCrop"
+      app:imgRes="@{vm.getImageUrl(position)}"
+      tools:src="@drawable/ic_launcher_background"
+      />
 </layout>

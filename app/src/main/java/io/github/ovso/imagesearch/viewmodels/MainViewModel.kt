@@ -77,6 +77,10 @@ class MainViewModel : BaseViewModel() {
 
   fun getItem(position: Int) = mutableLiveData?.value?.get(position)
 
+  fun getImageUrl(position: Int): String? {
+    return mutableLiveData?.value?.get(position)?.pagemap?.cse_image?.first()?.src
+  }
+
   fun setItemsInAdapter(it: List<Item> = ArrayList()) {
     adapter?.addAll(it)
     adapter?.notifyDataSetChanged()

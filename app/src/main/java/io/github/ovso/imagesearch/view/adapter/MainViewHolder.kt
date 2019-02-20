@@ -9,9 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import io.github.ovso.imagesearch.R
 import io.github.ovso.imagesearch.viewmodels.MainViewModel
 
-class MainViewHolder(
-  var binding: ViewDataBinding
-) : RecyclerView.ViewHolder(binding.root) {
+class MainViewHolder(var binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root) {
 
   fun bind(
     viewModel: MainViewModel,

@@ -1,11 +1,7 @@
 package io.github.ovso.imagesearch.view.adapter
 
-import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
-import io.github.ovso.imagesearch.R
 import io.github.ovso.imagesearch.service.model.CustomSearch
 import io.github.ovso.imagesearch.viewmodels.MainViewModel
 

@@ -17,11 +17,15 @@ class CustomSearchRequest : BaseRequest<CustomSearchService>() {
         .build()
   }
 
-  fun customSearch(query: String): Single<CustomSearch.Result> {
+  fun customSearch(
+    startIndex: Int,
+    query: String
+  ): Single<CustomSearch.Result> {
     val param = HashMap<String, Any>()
     param.put("key", "AIzaSyAM9aaztXVlGNX40ZoFV5MYvpmg65qOCbQ")
     param.put("cx", "012722901045059265659:m8q8x8ftuii")
     param.put("q", query)
+    param.put("start", startIndex)
     return api.customSearch(param)
   }
 }

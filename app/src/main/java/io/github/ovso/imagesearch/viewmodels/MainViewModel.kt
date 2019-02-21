@@ -1,10 +1,10 @@
 package io.github.ovso.imagesearch.viewmodels
 
 import androidx.appcompat.widget.SearchView
-import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import io.github.ovso.imagesearch.service.model.CustomSearch
 import io.github.ovso.imagesearch.service.model.CustomSearch.Item
+import io.github.ovso.imagesearch.service.model.CustomSearch.Queries
 import io.github.ovso.imagesearch.service.repository.CustomSearchRequest
 import io.github.ovso.imagesearch.utils.Schedulers
 import io.github.ovso.imagesearch.view.adapter.MainAdapter
@@ -15,7 +15,6 @@ import java.util.concurrent.TimeUnit
 
 class MainViewModel : BaseViewModel() {
 
-  var name: ObservableField<String>? = null
   var selected: MutableLiveData<CustomSearch.Item>? = null
   var mutableLiveData: MutableLiveData<List<CustomSearch.Item>>? = null
   var customSearchRequest: CustomSearchRequest? = null
@@ -24,9 +23,11 @@ class MainViewModel : BaseViewModel() {
   var error: MutableLiveData<Int>? = null
   var loading: MutableLiveData<Int>? = null
   var showEmpty: MutableLiveData<Int>? = null
+  var queries: Queries? = null
+  var startIndex: Int? = null
+  var q: String? = null;
 
   fun init() {
-    name = ObservableField("ㅋㅋㅋㅋㅋㅋㅋㅋ");
     selected = MutableLiveData()
     schedulers = Schedulers()
     customSearchRequest = CustomSearchRequest()
@@ -35,6 +36,7 @@ class MainViewModel : BaseViewModel() {
     error = MutableLiveData()
     loading = MutableLiveData()
     showEmpty = MutableLiveData()
+    startIndex = 1;
   }
 
   val onQueryTextChange = object : SearchView.OnQueryTextListener {
@@ -46,7 +48,8 @@ class MainViewModel : BaseViewModel() {
       println("onQueryTextChange = $query")
       clearDisposable()
       if (!query.isNullOrEmpty()) {
-        customSearchRequest!!.customSearch(query)
+        q = query
+        customSearchRequest!!.customSearch(startIndex!!, query)
             .delay(1, TimeUnit.SECONDS)
             .subscribeOn(schedulers!!.io())
             .observeOn(schedulers!!.ui())
@@ -63,6 +66,9 @@ class MainViewModel : BaseViewModel() {
     return object : SingleObserver<CustomSearch.Result> {
       override fun onSuccess(t: CustomSearch.Result) {
         mutableLiveData?.value = t.items
+        queries = t.queries
+        startIndex = t.queries.nextPage.first()
+            .startIndex
       }
 
       override fun onSubscribe(d: Disposable) {
@@ -78,7 +84,9 @@ class MainViewModel : BaseViewModel() {
   fun getItem(position: Int) = mutableLiveData?.value?.get(position)
 
   fun getImageUrl(position: Int): String? {
-    return mutableLiveData?.value?.get(position)?.pagemap?.cse_image?.first()?.src
+    return mutableLiveData?.value?.get(position)
+        ?.pagemap?.cse_image?.first()
+        ?.src
   }
 
   fun setItemsInAdapter(it: List<Item> = ArrayList()) {
@@ -86,4 +94,10 @@ class MainViewModel : BaseViewModel() {
     adapter?.notifyDataSetChanged()
   }
 
+  fun onNextClick() {
+    if (!q.isNullOrEmpty()) {
+      onQueryTextChange.onQueryTextChange(q)
+    }
+
+  }
 }

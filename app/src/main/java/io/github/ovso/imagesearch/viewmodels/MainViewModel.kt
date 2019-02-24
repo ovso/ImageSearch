@@ -25,7 +25,7 @@ class MainViewModel : BaseViewModel() {
   var showEmpty: MutableLiveData<Int>? = null
   var queries: Queries? = null
   var startIndex: Int? = null
-  var q: String? = null;
+  var q: String? = null
 
   fun init() {
     selected = MutableLiveData()

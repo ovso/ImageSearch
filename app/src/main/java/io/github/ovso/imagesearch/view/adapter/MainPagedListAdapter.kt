@@ -40,6 +40,5 @@ class MainPagedListAdapter(private var viewModel: MainViewModel) : PagedListAdap
         return oldItem == newItem
       }
     }
-
   }
 }
